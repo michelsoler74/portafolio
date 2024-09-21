@@ -5,15 +5,30 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Mi Portafolio</title>
     <link rel="stylesheet" href="styles.css" />
+    <meta
+      name="description"
+      content="Portafolio personal de [Tu Nombre] - Desarrollador web principiante"
+    />
+    <meta name="keywords" content="portafolio, desarrollo web, proyectos" />
   </head>
   <body>
     <header>
       <h1>Bienvenido a mi Portafolio</h1>
       <nav>
         <ul>
-          <li><a href="#about">Sobre mí</a></li>
-          <li><a href="#projects">Proyectos</a></li>
-          <li><a href="#contact">Contacto</a></li>
+          <li>
+            <a href="#about" aria-label="Ir a la sección Sobre mí">Sobre mí</a>
+          </li>
+          <li>
+            <a href="#projects" aria-label="Ir a la sección Proyectos"
+              >Proyectos</a
+            >
+          </li>
+          <li>
+            <a href="#contact" aria-label="Ir a la sección Contacto"
+              >Contacto</a
+            >
+          </li>
         </ul>
       </nav>
     </header>
@@ -42,36 +57,32 @@
       </p>
     </section>
     <section id="projects">
-      <div class="container">
-        <h2>Mis Proyectos</h2>
-
-        <!-- Proyecto: Organizador de Carreras Virtuales -->
-        <div class="project">
+      <h2>Mis Proyectos</h2>
+      <div class="projects-container">
+        <article class="project">
           <h3>Organizador de Carreras Virtuales</h3>
           <p>
             Una aplicación web que organiza carreras virtuales, registra pilotos
             y gestiona los resultados de campeonatos.
           </p>
-          <a
-            href="https://github.com/michelsoler74/organizador-de-carreras-virtuales"
-            target="_blank"
-            class="btn"
-            >Ver Código en GitHub</a
-          >
-          <a
-            href="https://michelsoler74.github.io/organizador-de-carreras-virtuales/"
-            target="_blank"
-            class="btn"
-            >Ver Proyecto</a
-          >
-        </div>
-
+          <div class="project-links">
+            <a
+              href="https://github.com/michelsoler74/organizador-de-carreras-virtuales"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="btn"
+              >Ver Código en GitHub</a
+            >
+            <a
+              href="https://michelsoler74.github.io/organizador-de-carreras-virtuales/"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="btn"
+              >Ver Proyecto</a
+            >
+          </div>
+        </article>
         <!-- Añadir más proyectos aquí -->
-        <div class="project">
-          <h3>Nombre del Proyecto</h3>
-          <p>Breve descripción del proyecto .</p>
-          <a href="#" target="_blank" class="btn">Ver Proyecto</a>
-        </div>
       </div>
     </section>
 
