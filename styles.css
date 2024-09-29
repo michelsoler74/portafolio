@@ -1,3 +1,4 @@
+
 /* Importamos una fuente de Google Fonts */
 @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap");
 
@@ -65,6 +66,7 @@ section h2 {
   display: flex;
   flex-wrap: wrap;
   gap: 20px;
+  justify-content: center; /* Centra las tarjetas */
 }
 
 #projects li {
@@ -97,6 +99,7 @@ section h2 {
   border-radius: 5px;
   text-decoration: none;
   transition: background-color 0.3s ease;
+  font-weight: 600; /* Mejor visibilidad */
 }
 
 #projects a:hover {
@@ -119,6 +122,12 @@ form textarea {
   border-radius: 5px;
   border: 1px solid #ccc;
   font-size: 1rem;
+  transition: border-color 0.3s ease;
+}
+
+form input:focus,
+form textarea:focus {
+  border-color: #1d2b64; /* Cambia el borde al enfocarse */
 }
 
 form button {
@@ -149,4 +158,31 @@ footer {
 
 footer p {
   font-size: 1rem;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  #projects ul {
+    flex-direction: column; /* Alinea las tarjetas verticalmente */
+    align-items: center;
+  }
+
+  form input,
+  form textarea {
+    width: 100%; /* Asegura que los inputs ocupen todo el ancho */
+  }
+
+  form button {
+    width: 100%;
+  }
+}
+
+/* Ajuste de header para pantallas pequeñas */
+header h1 {
+  font-size: 1.8rem; /* Reducir tamaño en pantallas pequeñas */
+}
+
+nav ul li {
+  display: block; /* Coloca los enlaces en una lista vertical */
+  margin: 10px 0;
 }
