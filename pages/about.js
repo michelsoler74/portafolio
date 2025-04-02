@@ -1,281 +1,206 @@
 import React from "react";
 import Head from "next/head";
+import Image from "next/image";
 import Link from "next/link";
+import Navigation from "../components/Navigation";
+import styles from "../styles/About.module.css";
 
 export default function About() {
   return (
-    <div className="evelyn-container">
+    <div className={styles.container}>
       <Head>
-        <title>Sobre Mí | Mi Portafolio</title>
+        <title>Sobre Mí | Michel Soler</title>
         <meta
           name="description"
-          content="Información sobre el autor del portafolio"
+          content="Conoce más sobre Michel Soler, artista visual y desarrollador creativo"
         />
-        <style>{`
-          /* Estilos globales */
-          body {
-            font-family: 'Helvetica Neue', Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            color: #333;
-            background: #fff;
-          }
-          
-          .evelyn-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px;
-          }
-          
-          /* Navegación */
-          .site-logo {
-            text-align: center;
-            margin-bottom: 30px;
-            font-size: 24px;
-            font-weight: 300;
-            letter-spacing: 2px;
-          }
-          
-          .nav-container {
-            display: flex;
-            justify-content: center;
-            padding: 20px 0;
-            border-bottom: 1px solid #f0f0f0;
-            margin-bottom: 40px;
-          }
-          
-          .nav-item {
-            margin: 0 15px;
-            text-transform: lowercase;
-            color: #888;
-            cursor: pointer;
-            font-size: 14px;
-            letter-spacing: 0.5px;
-            transition: color 0.3s ease;
-          }
-          
-          .nav-item:hover, .nav-item.active {
-            color: #000;
-          }
-          
-          /* Contenido Sobre Mí */
-          .about-container {
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 20px;
-          }
-          
-          .about-header {
-            text-align: center;
-            margin-bottom: 40px;
-          }
-          
-          .about-title {
-            font-size: 24px;
-            font-weight: 300;
-            margin-bottom: 20px;
-          }
-          
-          .about-content {
-            display: flex;
-            flex-direction: column;
-            gap: 40px;
-          }
-          
-          .about-section {
-            margin-bottom: 30px;
-          }
-          
-          .about-section h2 {
-            font-size: 18px;
-            font-weight: 300;
-            margin-bottom: 15px;
-            color: #444;
-          }
-          
-          .about-section p {
-            line-height: 1.8;
-            color: #555;
-            margin-bottom: 15px;
-          }
-          
-          .about-image {
-            width: 100%;
-            max-width: 400px;
-            height: auto;
-            margin: 0 auto 40px;
-            display: block;
-            border-radius: 3px;
-          }
-          
-          .skills-list {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            margin-top: 20px;
-          }
-          
-          .skill-item {
-            background-color: #f8f8f8;
-            padding: 6px 12px;
-            border-radius: 3px;
-            font-size: 14px;
-            color: #555;
-          }
-          
-          .contact-links {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            margin-top: 20px;
-          }
-          
-          .contact-link {
-            color: #666;
-            transition: color 0.3s ease;
-            text-decoration: none;
-          }
-          
-          .contact-link:hover {
-            color: #000;
-          }
-          
-          /* Footer */
-          .footer {
-            text-align: center;
-            margin-top: 60px;
-            padding: 20px 0;
-            font-size: 12px;
-            color: #888;
-          }
-          
-          /* Media Queries para responsive */
-          @media (max-width: 768px) {
-            .nav-container {
-              flex-wrap: wrap;
-            }
-            
-            .nav-item {
-              margin: 5px 10px;
-            }
-            
-            .about-container {
-              padding: 10px;
-            }
-          }
-        `}</style>
       </Head>
 
-      <div className="site-logo">
-        <Link href="/evelyn-style">
-          <span style={{ cursor: "pointer" }}>tu nombre</span>
-        </Link>
-      </div>
+      <Navigation />
 
-      <nav className="nav-container">
-        <Link href="/evelyn-style">
-          <span className="nav-item">todos los trabajos</span>
-        </Link>
-        <Link href="/evelyn-style?category=physical">
-          <span className="nav-item">trabajos físicos</span>
-        </Link>
-        <Link href="/evelyn-style?category=digital">
-          <span className="nav-item">trabajos digitales</span>
-        </Link>
-        <Link href="/evelyn-style?category=editorial">
-          <span className="nav-item">editorial</span>
-        </Link>
-        <Link href="/about">
-          <span className="nav-item active">sobre mí</span>
-        </Link>
-        <Link href="/contact">
-          <span className="nav-item">contacto</span>
-        </Link>
-      </nav>
+      <main className={styles.main}>
+        <section className={styles.hero}>
+          <div className={styles.heroContent}>
+            <div className={styles.imageWrapper}>
+              <Image
+                src="/images/profile.jpg"
+                alt="Michel Soler"
+                width={600}
+                height={600}
+                className={styles.profileImage}
+                priority
+              />
+            </div>
+            <h1 className={styles.title}>Michel Soler Poisson</h1>
+            <p className={styles.subtitle}>
+              Profesional de la Construcción & Entusiasta de la IA
+            </p>
+          </div>
+        </section>
 
-      <div className="about-container">
-        <div className="about-header">
-          <h1 className="about-title">sobre mí</h1>
-        </div>
-
-        <img
-          src="https://placehold.co/400x500/e2e2e2/5c5c5c?text=Mi+Foto"
-          alt="Mi foto de perfil"
-          className="about-image"
-        />
-
-        <div className="about-content">
-          <div className="about-section">
+        <section className={styles.content}>
+          <div className={styles.bio}>
+            <h2>Mi Historia</h2>
             <p>
-              Soy un diseñador y desarrollador con más de 5 años de experiencia
-              en la creación de experiencias digitales y proyectos creativos. Mi
-              trabajo se centra en la intersección entre tecnología, arte y
-              experiencia de usuario.
+              Nacido en Francia en 1974, me trasladé a España a los 14 años
+              donde he desarrollado mi carrera profesional en el sector de la
+              construcción durante más de 30 años. Actualmente resido y trabajo
+              en Ibiza como encargado de obra, liderando proyectos de reformas y
+              pequeñas construcciones, donde cada día aporto mi experiencia y
+              profesionalidad.
             </p>
             <p>
-              Estudié Diseño Gráfico en la Universidad XYZ y desde entonces he
-              trabajado con diversos clientes y agencias, llevando a cabo
-              proyectos que van desde sitios web interactivos hasta
-              instalaciones artísticas y publicaciones editoriales.
+              Siempre he sentido una gran fascinación por la tecnología y los
+              videojuegos, lo que me ha llevado a crear contenido en plataformas
+              como Twitch y YouTube, donde comparto tanto mi día a día
+              profesional como sesiones de gaming. Esta pasión por la tecnología
+              me ha llevado a explorar nuevos horizontes en el campo de la
+              Inteligencia Artificial.
+            </p>
+            <p>
+              Recientemente, he completado un Máster en Inteligencia Artificial
+              en BigScool Barcelona, y actualmente estoy desarrollando varios
+              proyectos innovadores. Entre ellos, destaca la creación de un
+              juguete interactivo con IA: un avatar de Scooby que interactúa por
+              voz y texto con los niños. Además, trabajo con automatizaciones
+              usando n8n, creación de imágenes con Comfui, y producción de
+              videos con VideoTok.
             </p>
           </div>
 
-          <div className="about-section">
-            <h2>Educación</h2>
-            <p>Universidad XYZ — Licenciatura en Diseño Gráfico, 2015-2019</p>
-            <p>Escuela de Artes ABC — Diploma en Fotografía Digital, 2020</p>
-          </div>
-
-          <div className="about-section">
-            <h2>Experiencia</h2>
-            <p>Estudio Creativo XYZ — Diseñador Senior, 2019-Presente</p>
-            <p>Agencia Digital ABC — Diseñador Jr., 2017-2019</p>
-          </div>
-
-          <div className="about-section">
-            <h2>Habilidades</h2>
-            <div className="skills-list">
-              <span className="skill-item">Diseño Web</span>
-              <span className="skill-item">Desarrollo Frontend</span>
-              <span className="skill-item">React</span>
-              <span className="skill-item">Next.js</span>
-              <span className="skill-item">Ilustración Digital</span>
-              <span className="skill-item">Adobe Creative Suite</span>
-              <span className="skill-item">Fotografía</span>
-              <span className="skill-item">Diseño Editorial</span>
+          <div className={styles.education}>
+            <h2>Experiencia & Formación</h2>
+            <div className={styles.timelineGrid}>
+              <div className={styles.timelineItem}>
+                <span className={styles.year}>1993-Presente</span>
+                <h3>Encargado de Obra</h3>
+                <p>Especialista en Reformas y Construcción</p>
+                <p>
+                  Gestión y supervisión de proyectos de construcción en Ibiza
+                </p>
+              </div>
+              <div className={styles.timelineItem}>
+                <span className={styles.year}>2023</span>
+                <h3>Máster en Inteligencia Artificial</h3>
+                <p>BigScool Barcelona</p>
+                <p>
+                  Especialización en automatización y aplicaciones prácticas de
+                  IA
+                </p>
+              </div>
             </div>
           </div>
 
-          <div className="about-section">
-            <h2>Contacto</h2>
-            <div className="contact-links">
-              <a href="mailto:email@ejemplo.com" className="contact-link">
-                email@ejemplo.com
-              </a>
-              <a
-                href="https://instagram.com/usuario"
+          <div className={styles.skills}>
+            <h2>Áreas de Conocimiento</h2>
+            <div className={styles.skillsGrid}>
+              <div className={styles.skillCategory}>
+                <h3>Construcción</h3>
+                <ul>
+                  <li>Gestión de Obras</li>
+                  <li>Reformas Integrales</li>
+                  <li>Dirección de Equipos</li>
+                  <li>Pequeña Construcción</li>
+                </ul>
+              </div>
+              <div className={styles.skillCategory}>
+                <h3>Tecnología & IA</h3>
+                <ul>
+                  <li>Automatización con n8n</li>
+                  <li>Generación de Imágenes IA</li>
+                  <li>Creación de Videos IA</li>
+                  <li>Desarrollo de Chatbots</li>
+                </ul>
+              </div>
+              <div className={styles.skillCategory}>
+                <h3>Contenido Digital</h3>
+                <ul>
+                  <li>Streaming en Twitch</li>
+                  <li>Contenido en YouTube</li>
+                  <li>Gaming</li>
+                  <li>Divulgación Tecnológica</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <div className={styles.interests}>
+            <h2>Proyectos Actuales</h2>
+            <p>
+              Actualmente, divido mi tiempo entre la gestión de proyectos de
+              construcción y el desarrollo de soluciones innovadoras con IA. Mi
+              proyecto más destacado es un juguete interactivo que utiliza IA
+              para crear una experiencia única para los niños, permitiendo la
+              interacción por voz y texto con un avatar de Scooby.
+            </p>
+            <p>
+              Además, exploro constantemente nuevas formas de aplicar la IA en
+              diferentes ámbitos, desde la automatización de procesos con n8n
+              hasta la creación de contenido multimedia con herramientas como
+              Comfui y VideoTok. Comparto estas experiencias y conocimientos a
+              través de mis canales de Twitch y YouTube.
+            </p>
+          </div>
+
+          <div className={styles.contact}>
+            <h2>Conectemos</h2>
+            <p>
+              Si te interesa la tecnología, la IA o quieres seguir mi contenido
+              sobre construcción, gaming y tecnología, puedes encontrarme en mis
+              redes:
+            </p>
+            <div className={styles.socialLinks}>
+              <Link
+                href="https://www.youtube.com/@michelsoler7801"
+                className={styles.socialLink}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="contact-link"
+              >
+                YouTube
+              </Link>
+              <Link
+                href="https://www.twitch.tv/michelsoler74"
+                className={styles.socialLink}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Twitch
+              </Link>
+              <Link
+                href="https://www.instagram.com/solerpoisson/"
+                className={styles.socialLink}
+                target="_blank"
+                rel="noopener noreferrer"
               >
                 Instagram
-              </a>
-              <a
-                href="https://linkedin.com/in/usuario"
+              </Link>
+              <Link
+                href="https://www.tiktok.com/@michelsoler74_twitch"
+                className={styles.socialLink}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="contact-link"
+              >
+                TikTok
+              </Link>
+              <Link
+                href="https://linkedin.com/in/michel-poisson-6603067b"
+                className={styles.socialLink}
+                target="_blank"
+                rel="noopener noreferrer"
               >
                 LinkedIn
-              </a>
+              </Link>
+              <Link href="/contact" className={styles.contactButton}>
+                Contactar
+              </Link>
             </div>
           </div>
-        </div>
-      </div>
+        </section>
+      </main>
 
-      <footer className="footer">
+      <footer className={styles.footer}>
         <p>
-          © {new Date().getFullYear()} - Mi Nombre. Todos los derechos
+          © {new Date().getFullYear()} Michel Soler. Todos los derechos
           reservados.
         </p>
       </footer>

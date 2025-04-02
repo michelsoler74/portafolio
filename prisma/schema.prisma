@@ -30,3 +30,13 @@ model Download {
   user      User     @relation(fields: [userId], references: [id])
   createdAt DateTime @default(now())
 }
+
+model Contact {
+  id        String   @id @default(cuid())
+  name      String
+  email     String
+  message   String
+  subject   String?
+  createdAt DateTime @default(now())
+  status    String   @default("pending") // pending, read, responded
+}

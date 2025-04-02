@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import Head from "next/head";
 import Link from "next/link";
+import styles from "../styles/Contact.module.css";
 
 export default function Contact() {
   const [formData, setFormData] = useState({
@@ -10,11 +11,12 @@ export default function Contact() {
     message: "",
   });
 
-  const [formStatus, setFormStatus] = useState({
-    submitted: false,
-    error: false,
+  const [status, setStatus] = useState({
     message: "",
+    type: "", // 'success' o 'error'
   });
+
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -24,37 +26,48 @@ export default function Contact() {
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsSubmitting(true);
+    setStatus({ message: "", type: "" });
 
-    // Validación básica
-    if (!formData.name || !formData.email || !formData.message) {
-      setFormStatus({
-        submitted: false,
-        error: true,
-        message: "Por favor completa todos los campos requeridos.",
+    try {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
       });
-      return;
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        throw new Error(data.message || "Error al enviar el mensaje");
+      }
+
+      setStatus({
+        message: "¡Mensaje enviado correctamente! Gracias por contactar.",
+        type: "success",
+      });
+      setFormData({
+        name: "",
+        email: "",
+        subject: "",
+        message: "",
+      });
+    } catch (error) {
+      setStatus({
+        message: error.message,
+        type: "error",
+      });
+    } finally {
+      setIsSubmitting(false);
     }
-
-    // Simular envío exitoso (aquí se integraría un servicio real de emails)
-    setFormStatus({
-      submitted: true,
-      error: false,
-      message: "Gracias por tu mensaje. Me pondré en contacto contigo pronto.",
-    });
-
-    // Limpiar el formulario después del envío exitoso
-    setFormData({
-      name: "",
-      email: "",
-      subject: "",
-      message: "",
-    });
   };
 
   return (
-    <div className="evelyn-container">
+    <div className={styles.container}>
       <Head>
         <title>Contacto | Mi Portafolio</title>
         <meta
@@ -275,97 +288,78 @@ export default function Contact() {
         </Link>
       </nav>
 
-      <div className="contact-container">
-        <div className="contact-header">
-          <h1 className="contact-title">contacto</h1>
-        </div>
+      <div className={styles.content}>
+        <h1>Contacto</h1>
+        <p className={styles.intro}>
+          ¿Tienes alguna pregunta o propuesta? No dudes en contactarme.
+        </p>
 
-        {formStatus.message && (
-          <div
-            className={`form-status ${formStatus.error ? "error" : "success"}`}
+        {status.message && (
+          <div className={`${styles.message} ${styles[status.type]}`}>
+            {status.message}
+          </div>
+        )}
+
+        <form onSubmit={handleSubmit} className={styles.form}>
+          <div className={styles.formGroup}>
+            <label htmlFor="name">Nombre *</label>
+            <input
+              type="text"
+              id="name"
+              name="name"
+              value={formData.name}
+              onChange={handleChange}
+              required
+              disabled={isSubmitting}
+            />
+          </div>
+
+          <div className={styles.formGroup}>
+            <label htmlFor="email">Email *</label>
+            <input
+              type="email"
+              id="email"
+              name="email"
+              value={formData.email}
+              onChange={handleChange}
+              required
+              disabled={isSubmitting}
+            />
+          </div>
+
+          <div className={styles.formGroup}>
+            <label htmlFor="subject">Asunto</label>
+            <input
+              type="text"
+              id="subject"
+              name="subject"
+              value={formData.subject}
+              onChange={handleChange}
+              disabled={isSubmitting}
+            />
+          </div>
+
+          <div className={styles.formGroup}>
+            <label htmlFor="message">Mensaje *</label>
+            <textarea
+              id="message"
+              name="message"
+              value={formData.message}
+              onChange={handleChange}
+              required
+              disabled={isSubmitting}
+              rows="5"
+            />
+          </div>
+
+          <button
+            type="submit"
+            className={styles.submitButton}
+            disabled={isSubmitting}
           >
-            {formStatus.message}
-          </div>
-        )}
-
-        {!formStatus.submitted ? (
-          <form className="contact-form" onSubmit={handleSubmit}>
-            <div className="form-group">
-              <label className="form-label" htmlFor="name">
-                Nombre *
-              </label>
-              <input
-                type="text"
-                id="name"
-                name="name"
-                className="form-input"
-                value={formData.name}
-                onChange={handleChange}
-                required
-              />
-            </div>
-
-            <div className="form-group">
-              <label className="form-label" htmlFor="email">
-                Email *
-              </label>
-              <input
-                type="email"
-                id="email"
-                name="email"
-                className="form-input"
-                value={formData.email}
-                onChange={handleChange}
-                required
-              />
-            </div>
-
-            <div className="form-group">
-              <label className="form-label" htmlFor="subject">
-                Asunto
-              </label>
-              <input
-                type="text"
-                id="subject"
-                name="subject"
-                className="form-input"
-                value={formData.subject}
-                onChange={handleChange}
-              />
-            </div>
-
-            <div className="form-group">
-              <label className="form-label" htmlFor="message">
-                Mensaje *
-              </label>
-              <textarea
-                id="message"
-                name="message"
-                className="form-textarea"
-                value={formData.message}
-                onChange={handleChange}
-                required
-              ></textarea>
-            </div>
-
-            <button type="submit" className="form-submit">
-              Enviar mensaje
-            </button>
-          </form>
-        ) : (
-          <div style={{ textAlign: "center", marginTop: "20px" }}>
-            <p>Tu mensaje ha sido enviado. ¡Gracias por contactarme!</p>
-            <button
-              onClick={() =>
-                setFormStatus({ submitted: false, error: false, message: "" })
-              }
-              className="form-submit"
-              style={{ marginTop: "20px" }}
-            >
-              Enviar otro mensaje
-            </button>
-          </div>
-        )}
+            {isSubmitting ? "Enviando..." : "Enviar Mensaje"}
+          </button>
+        </form>
 
         <div className="contact-alternatives">
           <h2 className="alternatives-title">O contáctame directamente:</h2>
