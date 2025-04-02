@@ -2,10 +2,10 @@
   "name": "portafolio-minimalista",
   "version": "1.0.0",
   "description": "Portafolio web profesional y minimalista",
-  "main": "index.js",
+  "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "prisma generate && next build",
     "start": "next start",
     "lint": "next lint"
   },
@@ -18,17 +18,15 @@
   "license": "ISC",
   "dependencies": {
     "@prisma/client": "5.10.2",
-    "bcryptjs": "^2.4.3",
-    "cloudinary": "^2.0.1",
     "next": "14.1.0",
     "next-auth": "^4.24.6",
-    "prisma": "5.10.2",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "resend": "^2.1.0"
   },
   "devDependencies": {
     "eslint": "8.56.0",
-    "eslint-config-next": "14.1.0"
+    "eslint-config-next": "14.1.0",
+    "prisma": "5.10.2"
   }
 }
