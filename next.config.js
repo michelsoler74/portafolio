@@ -2,7 +2,13 @@
 const nextConfig = {
   reactStrictMode: true,
   images: {
-    domains: ["placehold.co"],
+    domains: [
+      "placehold.co",
+      "avatars.githubusercontent.com",
+      "raw.githubusercontent.com",
+      "github.com",
+      "images.unsplash.com",
+    ],
     dangerouslyAllowSVG: true,
     contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
     // Configuración para mantener la calidad de imagen
