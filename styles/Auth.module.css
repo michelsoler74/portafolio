@@ -1,72 +1,78 @@
-.container {
-  min-height: 100vh;
+.authContainer {
   display: flex;
-  justify-content: center;
+  flex-direction: column;
   align-items: center;
-  background: linear-gradient(to right, #000000, #434343);
+  justify-content: center;
+  min-height: 100vh;
   padding: 2rem;
+  background-color: #1a1a1a;
 }
 
-.formWrapper {
-  background: rgba(255, 255, 255, 0.1);
-  padding: 2rem;
-  border-radius: 10px;
-  backdrop-filter: blur(10px);
+.authTitle {
+  color: white;
+  text-align: center;
+  margin-bottom: 2rem;
+  font-size: 2rem;
+}
+
+.authForm {
   width: 100%;
   max-width: 400px;
-  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+  padding: 2rem;
+  background-color: #2a2a2a;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
-.form {
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
+.formGroup {
+  margin-bottom: 1.5rem;
 }
 
-.inputGroup {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-}
-
-.inputGroup label {
-  color: #fff;
-  font-size: 0.9rem;
-}
-
-.inputGroup input {
-  padding: 0.75rem;
-  border-radius: 5px;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  background: rgba(255, 255, 255, 0.1);
+.label {
+  display: block;
+  margin-bottom: 0.5rem;
   color: white;
-  font-size: 1rem;
 }
 
-.inputGroup input:focus {
+.input {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid #3a3a3a;
+  border-radius: 4px;
+  background-color: #333;
+  color: white;
+}
+
+.input:focus {
   outline: none;
-  border-color: rgba(255, 255, 255, 0.5);
+  border-color: #4a9eff;
 }
 
 .button {
-  background: rgba(255, 255, 255, 0.2);
-  color: white;
+  width: 100%;
   padding: 0.75rem;
+  background-color: #4a9eff;
+  color: white;
   border: none;
-  border-radius: 5px;
-  font-size: 1rem;
+  border-radius: 4px;
   cursor: pointer;
-  transition: background 0.3s ease;
+  transition: background-color 0.2s;
 }
 
 .button:hover {
-  background: rgba(255, 255, 255, 0.3);
+  background-color: #357abd;
 }
 
 .error {
-  color: #ff6b6b;
+  color: #ff4a4a;
+  margin-top: 1rem;
   text-align: center;
-  margin-bottom: 1rem;
+}
+
+.success {
+  color: #4aff4a;
+  margin-top: 1rem;
+  text-align: center;
 }
 
 .link {
@@ -82,11 +88,4 @@
 
 .link a:hover {
   text-decoration: underline;
-}
-
-h1 {
-  color: white;
-  text-align: center;
-  margin-bottom: 2rem;
-  font-size: 2rem;
 }
