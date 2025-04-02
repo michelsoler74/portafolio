@@ -289,7 +289,7 @@ export default function Contact() {
       </nav>
 
       <div className={styles.content}>
-        <h1>Contacto</h1>
+        <h1 className={styles.heading}>Contacto</h1>
         <p className={styles.intro}>
           ¿Tienes alguna pregunta o propuesta? No dudes en contactarme.
         </p>

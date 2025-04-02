@@ -40,9 +40,9 @@ export default function Login() {
   };
 
   return (
-    <div className={styles.container}>
+    <div className={styles.authContainer}>
       <div className={styles.formWrapper}>
-        <h1>Iniciar Sesión</h1>
+        <h1 className={styles.heading}>Iniciar Sesión</h1>
         {error && <p className={styles.error}>{error}</p>}
         {router.query.success && (
           <p className={styles.success}>
