@@ -1,8 +1,10 @@
+import { SessionProvider } from "next-auth/react";
+import Navigation from "../components/Navigation";
 import "../styles/globals.css";
 import "../styles/variables.css";
 import { useEffect } from "react";
 
-function MyApp({ Component, pageProps }) {
+function MyApp({ Component, pageProps: { session, ...pageProps } }) {
   // Manejo de errores global
   useEffect(() => {
     // Manejo de errores globales de JavaScript no capturados
@@ -31,9 +33,10 @@ function MyApp({ Component, pageProps }) {
   }, []);
 
   return (
-    <>
+    <SessionProvider session={session}>
+      <Navigation />
       <Component {...pageProps} />
-    </>
+    </SessionProvider>
   );
 }
 
