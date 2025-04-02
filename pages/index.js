@@ -6,6 +6,39 @@ import styles from "../styles/Home.module.css";
 import Lightbox from "../components/Lightbox";
 
 export default function Home() {
+  const images = [
+    {
+      src: "/images/carrera_de_perros_fh1sat.jpg",
+      alt: "Carrera de perros",
+      title: "Carrera de perros",
+    },
+    {
+      src: "/images/perro-en-la-montaña_hkuram.jpg",
+      alt: "Perro en la montaña",
+      title: "Perro en la montaña",
+    },
+    {
+      src: "/images/la-leona-y-el-cachorro_r0xqr7.jpg",
+      alt: "La leona y el cachorro",
+      title: "La leona y el cachorro",
+    },
+    {
+      src: "/images/despues-del-cataclismo_tnll52.jpg",
+      alt: "Después del cataclismo",
+      title: "Después del cataclismo",
+    },
+    {
+      src: "/images/las-mascotas-de-marte_a4e5je.jpg",
+      alt: "Las mascotas de Marte",
+      title: "Las mascotas de Marte",
+    },
+    {
+      src: "/images/camino-del-bosque_h8gnif.jpg",
+      alt: "Camino del bosque",
+      title: "Camino del bosque",
+    },
+  ];
+
   const [activeSection, setActiveSection] = useState("obras");
   const [isLoading, setIsLoading] = useState(true);
   const [media, setMedia] = useState({ images: [], videos: [] });
@@ -30,162 +63,48 @@ export default function Home() {
   return (
     <div className={styles.container}>
       <Head>
-        <title>Mi Universo Creativo</title>
+        <title>Michel Soler | Portfolio</title>
         <meta
           name="description"
-          content="Portfolio digital de obras visuales y experimentos"
+          content="Portfolio de Michel Soler - Construcción, IA y Tecnología"
         />
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <header className={styles.header}>
-        <h1 className={styles.title}>Mi Universo Creativo</h1>
-        <nav className={styles.nav}>
-          <button
-            className={`${styles.navLink} ${
-              activeSection === "obras" ? styles.active : ""
-            }`}
-            onClick={() => setActiveSection("obras")}
-          >
-            obras
-          </button>
-          <button
-            className={`${styles.navLink} ${
-              activeSection === "videos" ? styles.active : ""
-            }`}
-            onClick={() => setActiveSection("videos")}
-          >
-            videos
-          </button>
-          <button
-            className={`${styles.navLink} ${
-              activeSection === "sobre" ? styles.active : ""
-            }`}
-            onClick={() => setActiveSection("sobre")}
-          >
-            sobre mí
-          </button>
-          <Link href="/contact" className={styles.navLink}>
-            contacto
-          </Link>
-        </nav>
-      </header>
-
       <main className={styles.main}>
-        {activeSection === "obras" && (
-          <section className={styles.gallery}>
-            <div className={styles.grid}>
-              {isLoading ? (
-                <p>Cargando obras...</p>
-              ) : (
-                media.images.map((image) => (
-                  <div
-                    key={image.id}
-                    className={styles.imageCard}
-                    onClick={() => setSelectedImage(image)}
-                  >
-                    <div className={styles.imageContainer}>
-                      <Image
-                        src={image.url}
-                        alt={image.title}
-                        fill
-                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                        className={styles.image}
-                      />
-                    </div>
-                    <h3 className={styles.imageTitle}>{image.title}</h3>
-                  </div>
-                ))
-              )}
-            </div>
-          </section>
-        )}
+        <section className={styles.hero}>
+          <div className={styles.heroContent}>
+            <h1 className={styles.heroTitle}>
+              Michel Soler
+              <span className={styles.highlight}> Portfolio</span>
+            </h1>
+            <p className={styles.heroDescription}>
+              Profesional de la construcción, entusiasta de la IA y creador de
+              contenido
+            </p>
+          </div>
+        </section>
 
-        {activeSection === "videos" && (
-          <section className={styles.gallery}>
-            <div className={styles.grid}>
-              {isLoading ? (
-                <p>Cargando videos...</p>
-              ) : (
-                media.videos.map((video) => (
-                  <div key={video.id} className={styles.videoCard}>
-                    <video
-                      src={video.url}
-                      controls
-                      className={styles.video}
-                      poster={video.thumbnail}
-                    />
-                    <h3 className={styles.videoTitle}>{video.title}</h3>
-                  </div>
-                ))
-              )}
-            </div>
-          </section>
-        )}
-
-        {activeSection === "sobre" && (
-          <section className={styles.about}>
-            <div className={styles.aboutContent}>
-              <Image
-                src="https://placehold.co/400x400/e2e2e2/666666?text=Profile"
-                alt="Mi foto"
-                width={400}
-                height={400}
-                className={styles.profileImage}
-              />
-              <div className={styles.aboutText}>
-                <h2>Sobre Mí</h2>
-                <p>
-                  Soy un artista visual y desarrollador creativo apasionado por
-                  la intersección entre arte y tecnología. Mi trabajo explora
-                  las posibilidades de la expresión digital y la interactividad.
-                </p>
-                <p>
-                  A través de mi obra, busco crear experiencias inmersivas que
-                  desafíen los límites entre lo físico y lo digital, utilizando
-                  tecnologías web modernas y técnicas de programación creativa.
-                </p>
+        <section className={styles.gallery}>
+          <h2 className={styles.sectionTitle}>Imágenes</h2>
+          <div className={styles.grid}>
+            {images.map((image, index) => (
+              <div key={index} className={styles.imageCard}>
+                <div className={styles.imageContainer}>
+                  <Image
+                    src={image.src}
+                    alt={image.alt}
+                    fill
+                    style={{ objectFit: "cover" }}
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                  />
+                </div>
+                <h3 className={styles.imageTitle}>{image.title}</h3>
               </div>
-            </div>
-          </section>
-        )}
-
-        {selectedImage && (
-          <Lightbox
-            image={selectedImage}
-            onClose={() => setSelectedImage(null)}
-          />
-        )}
+            ))}
+          </div>
+        </section>
       </main>
-
-      <footer className={styles.footer}>
-        <div className={styles.social}>
-          <a
-            href="https://instagram.com/tu-usuario"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            instagram
-          </a>
-          <a
-            href="https://twitter.com/tu-usuario"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            twitter
-          </a>
-          <a
-            href="https://github.com/tu-usuario"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            github
-          </a>
-        </div>
-        <p className={styles.copyright}>
-          © {new Date().getFullYear()} Mi Universo Creativo
-        </p>
-      </footer>
     </div>
   );
 }

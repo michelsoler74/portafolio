@@ -23,10 +23,10 @@ export default function About() {
           <div className={styles.heroContent}>
             <div className={styles.imageWrapper}>
               <Image
-                src="/images/profile.jpg"
+                src="/profile.jpg"
                 alt="Michel Soler"
-                width={600}
-                height={600}
+                width={200}
+                height={200}
                 className={styles.profileImage}
                 priority
               />
@@ -40,85 +40,59 @@ export default function About() {
 
         <section className={styles.content}>
           <div className={styles.bio}>
-            <h2>Mi Historia</h2>
+            <h2>Sobre Mí</h2>
             <p>
-              Nacido en Francia en 1974, me trasladé a España a los 14 años
-              donde he desarrollado mi carrera profesional en el sector de la
-              construcción durante más de 30 años. Actualmente resido y trabajo
-              en Ibiza como encargado de obra, liderando proyectos de reformas y
-              pequeñas construcciones, donde cada día aporto mi experiencia y
-              profesionalidad.
+              Soy un profesional de la construcción con más de 30 años de experiencia, nacido en Francia y residente en Ibiza, España. Mi pasión por la tecnología y la innovación me ha llevado a explorar el fascinante mundo de la Inteligencia Artificial.
             </p>
             <p>
-              Siempre he sentido una gran fascinación por la tecnología y los
-              videojuegos, lo que me ha llevado a crear contenido en plataformas
-              como Twitch y YouTube, donde comparto tanto mi día a día
-              profesional como sesiones de gaming. Esta pasión por la tecnología
-              me ha llevado a explorar nuevos horizontes en el campo de la
-              Inteligencia Artificial.
-            </p>
-            <p>
-              Recientemente, he completado un Máster en Inteligencia Artificial
-              en BigScool Barcelona, y actualmente estoy desarrollando varios
-              proyectos innovadores. Entre ellos, destaca la creación de un
-              juguete interactivo con IA: un avatar de Scooby que interactúa por
-              voz y texto con los niños. Además, trabajo con automatizaciones
-              usando n8n, creación de imágenes con Comfui, y producción de
-              videos con VideoTok.
+              Recientemente completé un máster en IA en BigScool Barcelona, y ahora combino mi experiencia en construcción con las últimas tecnologías para crear soluciones innovadoras.
             </p>
           </div>
 
           <div className={styles.education}>
-            <h2>Experiencia & Formación</h2>
+            <h2>Experiencia Profesional</h2>
             <div className={styles.timelineGrid}>
               <div className={styles.timelineItem}>
-                <span className={styles.year}>1993-Presente</span>
-                <h3>Encargado de Obra</h3>
-                <p>Especialista en Reformas y Construcción</p>
-                <p>
-                  Gestión y supervisión de proyectos de construcción en Ibiza
-                </p>
+                <span className={styles.year}>Actualidad</span>
+                <h3>Construction Manager en Ibiza</h3>
+                <p>Gestión de proyectos de renovación y construcción, especializado en obras residenciales y comerciales.</p>
               </div>
               <div className={styles.timelineItem}>
                 <span className={styles.year}>2023</span>
                 <h3>Máster en Inteligencia Artificial</h3>
-                <p>BigScool Barcelona</p>
-                <p>
-                  Especialización en automatización y aplicaciones prácticas de
-                  IA
-                </p>
+                <p>BigScool Barcelona - Especialización en aplicaciones prácticas de IA</p>
               </div>
             </div>
           </div>
 
           <div className={styles.skills}>
-            <h2>Áreas de Conocimiento</h2>
+            <h2>Habilidades</h2>
             <div className={styles.skillsGrid}>
               <div className={styles.skillCategory}>
                 <h3>Construcción</h3>
                 <ul>
-                  <li>Gestión de Obras</li>
-                  <li>Reformas Integrales</li>
-                  <li>Dirección de Equipos</li>
-                  <li>Pequeña Construcción</li>
+                  <li>Gestión de proyectos</li>
+                  <li>Renovaciones</li>
+                  <li>Construcción residencial</li>
+                  <li>Supervisión de obras</li>
                 </ul>
               </div>
               <div className={styles.skillCategory}>
                 <h3>Tecnología & IA</h3>
                 <ul>
                   <li>Automatización con n8n</li>
-                  <li>Generación de Imágenes IA</li>
-                  <li>Creación de Videos IA</li>
-                  <li>Desarrollo de Chatbots</li>
+                  <li>Generación de imágenes con Comfyui</li>
+                  <li>Producción de videos con VideoTok</li>
+                  <li>Desarrollo de proyectos IA</li>
                 </ul>
               </div>
               <div className={styles.skillCategory}>
-                <h3>Contenido Digital</h3>
+                <h3>Digital</h3>
                 <ul>
+                  <li>Creación de contenido</li>
                   <li>Streaming en Twitch</li>
-                  <li>Contenido en YouTube</li>
-                  <li>Gaming</li>
-                  <li>Divulgación Tecnológica</li>
+                  <li>Producción de YouTube</li>
+                  <li>Gestión de redes sociales</li>
                 </ul>
               </div>
             </div>
@@ -127,18 +101,7 @@ export default function About() {
           <div className={styles.interests}>
             <h2>Proyectos Actuales</h2>
             <p>
-              Actualmente, divido mi tiempo entre la gestión de proyectos de
-              construcción y el desarrollo de soluciones innovadoras con IA. Mi
-              proyecto más destacado es un juguete interactivo que utiliza IA
-              para crear una experiencia única para los niños, permitiendo la
-              interacción por voz y texto con un avatar de Scooby.
-            </p>
-            <p>
-              Además, exploro constantemente nuevas formas de aplicar la IA en
-              diferentes ámbitos, desde la automatización de procesos con n8n
-              hasta la creación de contenido multimedia con herramientas como
-              Comfui y VideoTok. Comparto estas experiencias y conocimientos a
-              través de mis canales de Twitch y YouTube.
+              Actualmente estoy trabajando en varios proyectos emocionantes, incluyendo el desarrollo de un juguete interactivo con IA: un avatar de perro llamado Scooby que interactúa con niños a través de voz y texto.
             </p>
           </div>
 
