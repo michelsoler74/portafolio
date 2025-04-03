@@ -1,9 +1,8 @@
 /* Contenedor principal */
 .container {
   min-height: 100vh;
-  padding: 2rem;
-  max-width: 1400px;
-  margin: 0 auto;
+  background: linear-gradient(to bottom, #1a202c, #2d3748);
+  color: white;
 }
 
 /* Encabezado */
@@ -269,26 +268,30 @@
   }
 
   .heroDescription {
-    font-size: 1.1rem;
+    font-size: 1.2rem;
   }
 
   .sectionTitle {
     font-size: 2rem;
   }
+
+  .features {
+    padding: 2rem 1rem;
+  }
+
+  .featureGrid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.main {
+  padding-top: 5rem;
 }
 
 .hero {
-  min-height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
   text-align: center;
-  padding: var(--space-2xl) 0;
-  background: linear-gradient(
-    135deg,
-    var(--background-color) 0%,
-    var(--background-alt-color) 100%
-  );
+  padding: 4rem 1rem;
+  background: rgba(0, 0, 0, 0.3);
 }
 
 .heroContent {
@@ -298,20 +301,17 @@
 
 .heroTitle {
   font-size: 3.5rem;
-  font-weight: 700;
-  margin-bottom: var(--space-lg);
-  line-height: 1.2;
+  margin-bottom: 1rem;
 }
 
 .highlight {
-  color: var(--primary-color);
+  color: #66d9e8;
 }
 
 .heroDescription {
-  font-size: 1.25rem;
-  color: var(--text-light-color);
-  margin-bottom: var(--space-xl);
-  line-height: 1.6;
+  font-size: 1.5rem;
+  color: #a0aec0;
+  margin-bottom: 2rem;
 }
 
 .section {
@@ -319,10 +319,9 @@
 }
 
 .sectionTitle {
-  font-size: 2.5rem;
-  font-weight: 700;
   text-align: center;
-  margin-bottom: var(--space-xl);
+  font-size: 2.5rem;
+  margin-bottom: 3rem;
 }
 
 .contactContent {
@@ -346,10 +345,6 @@
 .contactButton:hover {
   transform: translateY(-2px);
   box-shadow: var(--shadow-md);
-}
-
-.main {
-  min-height: 60vh;
 }
 
 .gallery {
@@ -438,4 +433,43 @@
   font-weight: 300;
   margin: 0.5rem 0;
   color: #333;
+}
+
+.features {
+  padding: 4rem 1rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.featureGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 2rem;
+  padding: 0 1rem;
+}
+
+.featureCard {
+  background: rgba(255, 255, 255, 0.1);
+  padding: 2rem;
+  border-radius: 10px;
+  text-align: center;
+  transition: transform 0.3s ease, background-color 0.3s ease;
+  text-decoration: none;
+  color: white;
+}
+
+.featureCard:hover {
+  transform: translateY(-5px);
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.featureCard h3 {
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+  color: #66d9e8;
+}
+
+.featureCard p {
+  color: #a0aec0;
+  line-height: 1.5;
 }

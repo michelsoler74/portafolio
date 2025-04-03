@@ -1,10 +1,10 @@
 import { v2 as cloudinary } from "cloudinary";
 
-// Configuración de Cloudinary
+// Configuración de Cloudinary usando variables de entorno
 cloudinary.config({
-  cloud_name: "dezpemypy",
-  api_key: "628982882667992",
-  api_secret: "qPmmxGX4xkNM4DVQep2cFtu9KQs",
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
 export default async function handler(req, res) {

@@ -1,22 +1,26 @@
+import React, { useState, useEffect } from "react";
 import Head from "next/head";
 import styles from "../styles/Videos.module.css";
 
 export default function Videos() {
-  const videos = [
-    {
-      id: 1,
-      title: "Introducción a la IA",
-      url: "https://www.youtube.com/embed/VIDEO_ID_1",
-      thumbnail: "/thumbnails/ia-intro.jpg",
-    },
-    {
-      id: 2,
-      title: "Tips de Construcción",
-      url: "https://www.youtube.com/embed/VIDEO_ID_2",
-      thumbnail: "/thumbnails/construccion-tips.jpg",
-    },
-    // Agrega más videos según sea necesario
-  ];
+  const [videos, setVideos] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    async function loadVideos() {
+      try {
+        const response = await fetch("/api/cloudinary/media");
+        const data = await response.json();
+        setVideos(data.videos);
+      } catch (error) {
+        console.error("Error cargando videos:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    }
+
+    loadVideos();
+  }, []);
 
   return (
     <div className={styles.container}>
@@ -30,20 +34,27 @@ export default function Videos() {
 
       <main className={styles.main}>
         <h1 className={styles.title}>Videos</h1>
-        <div className={styles.grid}>
-          {videos.map((video) => (
-            <div key={video.id} className={styles.videoCard}>
-              <iframe
-                src={video.url}
-                title={video.title}
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                allowFullScreen
-                className={styles.videoFrame}
-              />
-              <h3 className={styles.videoTitle}>{video.title}</h3>
-            </div>
-          ))}
-        </div>
+
+        {isLoading ? (
+          <div className={styles.loading}>Cargando videos...</div>
+        ) : (
+          <div className={styles.grid}>
+            {videos.map((video) => (
+              <div key={video.id} className={styles.videoCard}>
+                <video
+                  src={video.url}
+                  controls
+                  className={styles.videoFrame}
+                  poster={video.thumbnail}
+                >
+                  <source src={video.url} type={`video/${video.format}`} />
+                  Tu navegador no soporta el elemento de video.
+                </video>
+                <h3 className={styles.videoTitle}>{video.title}</h3>
+              </div>
+            ))}
+          </div>
+        )}
       </main>
     </div>
   );

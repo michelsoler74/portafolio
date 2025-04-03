@@ -12,7 +12,10 @@ export default function Navigation() {
       </Link>
       <div className={styles.links}>
         <Link href="/" className={styles.link}>
-          Imágenes
+          Inicio
+        </Link>
+        <Link href="/gallery" className={styles.link}>
+          Galería
         </Link>
         <Link href="/videos" className={styles.link}>
           Videos
