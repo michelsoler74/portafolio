@@ -13,38 +13,12 @@ export default async function handler(req, res) {
   }
 
   try {
-    // Verificar la conexión con Cloudinary
-    await cloudinary.api.ping();
+    const images = await getResources("", "image");
+    const videos = await getResources("", "video");
 
-    // Obtener todos los recursos
-    const result = await cloudinary.search
-      .expression("resource_type:image OR resource_type:video")
-      .sort_by("created_at", "desc")
-      .max_results(100)
-      .execute();
-
-    // Separar imágenes y videos
-    const images = result.resources.filter((r) => r.resource_type === "image");
-    const videos = result.resources.filter((r) => r.resource_type === "video");
-
-    // Formatear la respuesta
     return res.status(200).json({
-      images: images.map((image) => ({
-        id: image.public_id,
-        title: image.public_id.split("/").pop(),
-        url: image.secure_url,
-        width: image.width,
-        height: image.height,
-      })),
-      videos: videos.map((video) => ({
-        id: video.public_id,
-        title: video.public_id.split("/").pop(),
-        url: video.secure_url,
-        width: video.width,
-        height: video.height,
-        format: video.format,
-        duration: video.duration,
-      })),
+      images,
+      videos,
     });
   } catch (error) {
     console.error("Error en Cloudinary:", error);
@@ -57,16 +31,12 @@ export default async function handler(req, res) {
 
 async function getResources(folder, type) {
   try {
-    console.log(`Intentando obtener ${type}s de la carpeta: ${folder}`);
-
     const result = await cloudinary.api.resources({
       type: "upload",
       prefix: folder,
       resource_type: type,
       max_results: 100,
     });
-
-    console.log(`Recursos encontrados en ${folder}:`, result.resources.length);
 
     return result.resources.map((resource) => ({
       id: resource.public_id,
@@ -80,7 +50,7 @@ async function getResources(folder, type) {
       }),
     }));
   } catch (error) {
-    console.error(`Error fetching ${type}s from ${folder}:`, error);
+    console.error(`Error obteniendo ${type}s de ${folder}:`, error);
     return [];
   }
 }

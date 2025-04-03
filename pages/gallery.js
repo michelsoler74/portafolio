@@ -5,19 +5,26 @@ import styles from "../styles/Gallery.module.css";
 import Lightbox from "../components/Lightbox";
 
 export default function Gallery() {
-  const [isLoading, setIsLoading] = useState(true);
   const [media, setMedia] = useState({ images: [], videos: [] });
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
   const [selectedImage, setSelectedImage] = useState(null);
 
-  // Cargar imágenes desde Cloudinary
   useEffect(() => {
     async function loadMedia() {
       try {
         const response = await fetch("/api/cloudinary/media");
         const data = await response.json();
+
+        if (!response.ok) {
+          throw new Error(data.error || "Error al cargar los medios");
+        }
+
         setMedia(data);
-      } catch (error) {
-        console.error("Error cargando medios:", error);
+        setError(null);
+      } catch (err) {
+        console.error("Error cargando medios:", err);
+        setError(err.message);
       } finally {
         setIsLoading(false);
       }
@@ -39,13 +46,40 @@ export default function Gallery() {
       <main className={styles.main}>
         <h1 className={styles.title}>Galería de Imágenes</h1>
 
-        {isLoading ? (
-          <div className={styles.loading}>Cargando imágenes...</div>
-        ) : (
+        {isLoading && (
+          <div className={styles.loading}>
+            <div className={styles.loadingSpinner}></div>
+            <p>Cargando imágenes...</p>
+          </div>
+        )}
+
+        {error && (
+          <div className={styles.error}>
+            <p>Error: {error}</p>
+            <button
+              onClick={() => {
+                setIsLoading(true);
+                setError(null);
+                loadMedia();
+              }}
+              className={styles.retryButton}
+            >
+              Intentar de nuevo
+            </button>
+          </div>
+        )}
+
+        {!isLoading && !error && media.images.length === 0 && (
+          <div className={styles.empty}>
+            <p>No hay imágenes disponibles</p>
+          </div>
+        )}
+
+        {!isLoading && !error && media.images.length > 0 && (
           <div className={styles.grid}>
             {media.images.map((image, index) => (
               <div
-                key={index}
+                key={image.id || index}
                 className={styles.imageCard}
                 onClick={() => setSelectedImage(image)}
               >
