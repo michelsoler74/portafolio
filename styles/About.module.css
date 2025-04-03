@@ -1,24 +1,31 @@
+/* Contenedor principal de la página */
 .container {
-  min-height: 100vh;
-  padding: 2rem;
-  background: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 100%);
-  color: white;
+  min-height: 100vh; /* Altura mínima igual a la altura de la ventana */
+  padding: 2rem; /* Espaciado interno */
+  background: linear-gradient(
+    135deg,
+    #1a1a1a 0%,
+    #2a2a2a 100%
+  ); /* Fondo degradado */
+  color: white; /* Color del texto */
 }
 
+/* Contenedor del contenido principal */
 .main {
-  max-width: 1200px;
-  margin: 0 auto;
+  max-width: 1200px; /* Ancho máximo para mejor legibilidad */
+  margin: 0 auto; /* Centrado horizontal */
 }
 
-/* Sección Hero */
+/* Sección Hero - Cabecera con imagen de perfil */
 .hero {
   text-align: center;
   margin-bottom: 4rem;
   padding: 2rem;
-  background: rgba(255, 255, 255, 0.05);
-  border-radius: 1rem;
+  background: rgba(255, 255, 255, 0.05); /* Fondo semi-transparente */
+  border-radius: 1rem; /* Bordes redondeados */
 }
 
+/* Contenedor del contenido del hero */
 .heroContent {
   display: flex;
   flex-direction: column;
@@ -26,47 +33,57 @@
   gap: 1.5rem;
 }
 
+/* Contenedor de la imagen de perfil */
 .imageWrapper {
   position: relative;
   width: 200px;
   height: 200px;
-  border-radius: 50%;
+  border-radius: 50%; /* Hace la imagen circular */
   overflow: hidden;
   border: 4px solid #4a4a4a;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3); /* Sombra suave */
   margin-bottom: 1rem;
 }
 
+/* Estilos para la imagen de perfil */
 .profileImage {
-  object-fit: cover;
-  transition: transform 0.3s ease;
+  object-fit: cover; /* Asegura que la imagen cubra todo el espacio */
+  transition: transform 0.3s ease; /* Animación suave al hacer hover */
 }
 
+/* Efecto hover en la imagen */
 .imageWrapper:hover .profileImage {
-  transform: scale(1.05);
+  transform: scale(1.05); /* Aumenta ligeramente el tamaño al pasar el mouse */
 }
 
+/* Título principal */
 .title {
   font-size: 2.5rem;
   font-weight: bold;
   margin: 0;
-  background: linear-gradient(45deg, #f0f0f0, #ffffff);
+  background: linear-gradient(
+    45deg,
+    #f0f0f0,
+    #ffffff
+  ); /* Texto con degradado */
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 
+/* Subtítulo */
 .subtitle {
   font-size: 1.2rem;
   color: #b0b0b0;
   margin: 0;
 }
 
-/* Contenido Principal */
+/* Grid del contenido principal */
 .content {
   display: grid;
-  gap: 3rem;
+  gap: 3rem; /* Espacio entre secciones */
 }
 
+/* Estilos comunes para las secciones de contenido */
 .content section {
   background: rgba(255, 255, 255, 0.05);
   padding: 2rem;
@@ -74,10 +91,12 @@
   transition: transform 0.3s ease;
 }
 
+/* Efecto hover en las secciones */
 .content section:hover {
-  transform: translateY(-5px);
+  transform: translateY(-5px); /* Eleva ligeramente la sección */
 }
 
+/* Títulos de sección */
 .content h2 {
   font-size: 1.8rem;
   margin-bottom: 1.5rem;
@@ -86,40 +105,50 @@
   padding-bottom: 0.5rem;
 }
 
+/* Grid para la línea de tiempo */
 .timelineGrid {
   display: grid;
   gap: 2rem;
 }
 
+/* Elementos de la línea de tiempo */
 .timelineItem {
   position: relative;
   padding-left: 1.5rem;
-  border-left: 2px solid #4a4a4a;
+  border-left: 2px solid #4a4a4a; /* Línea vertical */
 }
 
+/* Año en la línea de tiempo */
 .year {
   color: #b0b0b0;
   font-size: 0.9rem;
 }
 
+/* Grid de habilidades */
 .skillsGrid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  grid-template-columns: repeat(
+    auto-fit,
+    minmax(250px, 1fr)
+  ); /* Columnas responsivas */
   gap: 2rem;
 }
 
+/* Títulos de categorías de habilidades */
 .skillCategory h3 {
   color: #ffffff;
   margin-bottom: 1rem;
   font-size: 1.2rem;
 }
 
+/* Listas de habilidades */
 .skillCategory ul {
   list-style: none;
   padding: 0;
   margin: 0;
 }
 
+/* Elementos de la lista de habilidades */
 .skillCategory li {
   margin-bottom: 0.5rem;
   color: #b0b0b0;
@@ -127,29 +156,33 @@
   align-items: center;
 }
 
+/* Punto decorativo antes de cada habilidad */
 .skillCategory li::before {
   content: "•";
-  color: #4a90e2;
+  color: #4a90e2; /* Color azul para los puntos */
   margin-right: 0.5rem;
 }
 
+/* Sección de intereses */
 .interests {
   line-height: 1.6;
 }
 
-/* Contact Section */
+/* Sección de contacto */
 .contact {
   text-align: center;
 }
 
+/* Contenedor de enlaces sociales */
 .socialLinks {
   display: flex;
   justify-content: center;
   gap: 1.5rem;
   margin-top: 1.5rem;
-  flex-wrap: wrap;
+  flex-wrap: wrap; /* Permite que los enlaces se envuelvan en pantallas pequeñas */
 }
 
+/* Enlaces sociales individuales */
 .socialLink {
   padding: 0.8rem 1.5rem;
   background: rgba(255, 255, 255, 0.1);
@@ -159,11 +192,13 @@
   transition: all 0.3s ease;
 }
 
+/* Efecto hover en enlaces sociales */
 .socialLink:hover {
   background: rgba(255, 255, 255, 0.2);
   transform: translateY(-2px);
 }
 
+/* Botón de contacto */
 .contactButton {
   padding: 0.8rem 2rem;
   background: linear-gradient(45deg, #4a90e2, #357abd);
@@ -173,21 +208,15 @@
   transition: all 0.3s ease;
 }
 
+/* Efecto hover en el botón de contacto */
 .contactButton:hover {
   transform: translateY(-2px);
   box-shadow: 0 4px 15px rgba(74, 144, 226, 0.3);
 }
 
-/* Footer */
-.footer {
-  text-align: center;
-  padding: 2rem;
-  color: #666;
-  border-top: 1px solid #eaeaea;
-}
-
-/* Responsive Design */
+/* Estilos responsivos */
 @media (max-width: 768px) {
+  /* Ajustes para pantallas pequeñas */
   .container {
     padding: 1rem;
   }
@@ -214,7 +243,7 @@
   }
 
   .skillsGrid {
-    grid-template-columns: 1fr;
+    grid-template-columns: 1fr; /* Una sola columna en móvil */
   }
 
   .socialLinks {
@@ -222,7 +251,8 @@
     align-items: center;
   }
 
-  .socialLink, .contactButton {
+  .socialLink,
+  .contactButton {
     width: 100%;
     text-align: center;
   }
