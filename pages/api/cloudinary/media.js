@@ -6,15 +6,37 @@ export default async function handler(req, res) {
   }
 
   try {
-    // Verificar que tenemos las variables de entorno necesarias
+    // Verificar todas las variables de entorno necesarias
+    console.log("Verificando configuración de Cloudinary...");
     if (!process.env.CLOUDINARY_CLOUD_NAME) {
-      throw new Error("Falta la configuración de Cloudinary");
+      throw new Error("CLOUDINARY_CLOUD_NAME no está configurado");
+    }
+    if (!process.env.CLOUDINARY_API_KEY) {
+      throw new Error("CLOUDINARY_API_KEY no está configurado");
+    }
+    if (!process.env.CLOUDINARY_API_SECRET) {
+      throw new Error("CLOUDINARY_API_SECRET no está configurado");
     }
 
-    console.log("Iniciando búsqueda de imágenes en Cloudinary");
-    console.log("Usando cloud_name:", process.env.CLOUDINARY_CLOUD_NAME);
+    console.log("Configuración actual:", {
+      cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+      api_key: process.env.CLOUDINARY_API_KEY?.slice(0, 5) + "...", // Solo mostramos los primeros 5 caracteres por seguridad
+    });
+
+    // Verificar la configuración de Cloudinary
+    const config = cloudinary.config();
+    console.log("Configuración de Cloudinary:", {
+      cloud_name: config.cloud_name,
+      api_key: config.api_key?.slice(0, 5) + "...",
+    });
+
+    // Intentar hacer un ping a Cloudinary primero
+    console.log("Verificando conexión con Cloudinary...");
+    await cloudinary.api.ping();
+    console.log("Conexión con Cloudinary establecida correctamente");
 
     // Obtener imágenes de la carpeta Inicio
+    console.log("Buscando imágenes en la carpeta Inicio...");
     const result = await cloudinary.api.resources({
       type: "upload",
       prefix: "Inicio",
@@ -34,10 +56,17 @@ export default async function handler(req, res) {
     console.log(`Imágenes encontradas: ${images.length}`);
     return res.status(200).json(images);
   } catch (error) {
-    console.error("Error al obtener imágenes:", error);
+    console.error("Error detallado:", {
+      message: error.message,
+      name: error.name,
+      stack: error.stack,
+    });
+
+    // Devolver un mensaje de error más detallado
     return res.status(500).json({
       error: "Error al obtener imágenes de Cloudinary",
       details: error.message,
+      name: error.name,
     });
   }
 }
