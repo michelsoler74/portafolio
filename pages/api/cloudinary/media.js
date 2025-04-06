@@ -36,12 +36,16 @@ export default async function handler(req, res) {
     console.log("Conexión con Cloudinary establecida correctamente");
 
     // Obtener imágenes de la carpeta Inicio
-    console.log("Buscando imágenes en la carpeta Inicio...");
+    console.log("Buscando imágenes...");
     const result = await cloudinary.api.resources({
       type: "upload",
-      prefix: "Inicio",
       resource_type: "image",
       max_results: 100,
+    });
+
+    console.log("Resultado de la búsqueda:", {
+      total: result.resources?.length || 0,
+      muestra: result.resources?.[0]?.public_id || "No hay imágenes",
     });
 
     // Procesar y formatear las imágenes
