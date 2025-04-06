@@ -1,4 +1,12 @@
-import cloudinary from "../../../lib/cloudinary";
+const cloudinary = require("cloudinary").v2;
+
+// Configurar Cloudinary una sola vez al inicio
+cloudinary.config({
+  cloud_name: "dezpemypy",
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
+  secure: true,
+});
 
 export default async function handler(req, res) {
   if (req.method !== "GET") {
@@ -6,40 +14,43 @@ export default async function handler(req, res) {
   }
 
   try {
-    // Verificar que tenemos las variables de entorno necesarias
-    if (!process.env.CLOUDINARY_CLOUD_NAME) {
-      throw new Error("Falta la configuración de Cloudinary");
+    // Verificar la configuración antes de hacer la llamada
+    const config = cloudinary.config();
+    if (!config.cloud_name) {
+      throw new Error("Cloudinary no está configurado correctamente");
     }
 
-    console.log("Iniciando búsqueda de videos en Cloudinary");
-    console.log("Usando cloud_name:", process.env.CLOUDINARY_CLOUD_NAME);
-
-    // Obtener videos de la carpeta Inicio
+    // Obtener videos
     const result = await cloudinary.api.resources({
       type: "upload",
-      prefix: "Inicio",
       resource_type: "video",
       max_results: 100,
     });
 
+    // Verificar que tenemos recursos antes de procesarlos
+    if (!result || !result.resources || !Array.isArray(result.resources)) {
+      throw new Error("No se recibieron recursos válidos de Cloudinary");
+    }
+
     // Procesar y formatear los videos
-    const videos = (result.resources || []).map((resource) => ({
+    const videos = result.resources.map((resource) => ({
       id: resource.public_id,
       title: resource.public_id.split("/").pop(),
       url: resource.secure_url,
       width: resource.width,
       height: resource.height,
-      format: resource.format,
       duration: resource.duration,
+      format: resource.format,
+      thumbnail: resource.secure_url.replace("/video/", "/video/thumbnail/"),
     }));
 
-    console.log(`Videos encontrados: ${videos.length}`);
     return res.status(200).json(videos);
   } catch (error) {
-    console.error("Error al obtener videos:", error);
+    console.error("Error completo:", error);
     return res.status(500).json({
       error: "Error al obtener videos de Cloudinary",
       details: error.message,
+      config: cloudinary.config(), // Incluir la configuración actual en el error
     });
   }
 }
