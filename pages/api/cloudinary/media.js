@@ -1,31 +1,31 @@
 const cloudinary = require("cloudinary").v2;
 
+// Configurar Cloudinary una sola vez al inicio
+cloudinary.config({
+  cloud_name: "dezpemypy",
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
+  secure: true,
+});
+
 export default async function handler(req, res) {
   if (req.method !== "GET") {
     return res.status(405).json({ error: "Método no permitido" });
   }
 
   try {
-    // Configuración directa de Cloudinary
-    cloudinary.config({
-      cloud_name: "dezpemypy",
-      api_key: process.env.CLOUDINARY_API_KEY,
-      api_secret: process.env.CLOUDINARY_API_SECRET,
-      secure: true,
-    });
-
-    // Obtener imágenes con manejo de errores más específico
-    let result;
-    try {
-      result = await cloudinary.api.resources({
-        type: "upload",
-        resource_type: "image",
-        max_results: 100,
-      });
-    } catch (cloudinaryError) {
-      console.error("Error específico de Cloudinary:", cloudinaryError);
-      throw new Error(`Error de Cloudinary: ${cloudinaryError.message}`);
+    // Verificar la configuración antes de hacer la llamada
+    const config = cloudinary.config();
+    if (!config.cloud_name) {
+      throw new Error("Cloudinary no está configurado correctamente");
     }
+
+    // Obtener imágenes
+    const result = await cloudinary.api.resources({
+      type: "upload",
+      resource_type: "image",
+      max_results: 100,
+    });
 
     // Verificar que tenemos recursos antes de procesarlos
     if (!result || !result.resources || !Array.isArray(result.resources)) {
@@ -47,6 +47,7 @@ export default async function handler(req, res) {
     return res.status(500).json({
       error: "Error al obtener imágenes de Cloudinary",
       details: error.message,
+      config: cloudinary.config(), // Incluir la configuración actual en el error
     });
   }
 }
