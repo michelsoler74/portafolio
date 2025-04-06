@@ -13,17 +13,38 @@ export default function Gallery() {
   useEffect(() => {
     async function loadMedia() {
       try {
+        console.log("Iniciando carga de medios...");
         const response = await fetch("/api/cloudinary/media");
         const data = await response.json();
 
         if (!response.ok) {
-          throw new Error(data.error || "Error al cargar los medios");
+          console.error("Error en la respuesta:", data);
+          throw new Error(
+            data.error || data.details || "Error al cargar los medios"
+          );
         }
 
-        setMedia(data);
+        // Validar la estructura de los datos
+        if (!data || typeof data !== "object") {
+          throw new Error("Formato de respuesta inválido");
+        }
+
+        const images = Array.isArray(data.images) ? data.images : [];
+        const videos = Array.isArray(data.videos) ? data.videos : [];
+
+        console.log("Medios cargados:", {
+          totalImages: images.length,
+          totalVideos: videos.length,
+        });
+
+        setMedia({ images, videos });
         setError(null);
       } catch (err) {
-        console.error("Error cargando medios:", err);
+        console.error("Error detallado:", {
+          message: err.message,
+          stack: err.stack,
+          name: err.name,
+        });
         setError(err.message);
       } finally {
         setIsLoading(false);
@@ -32,6 +53,34 @@ export default function Gallery() {
 
     loadMedia();
   }, []);
+
+  const renderImage = (image, index) => {
+    if (!image || !image.url) {
+      console.warn("Imagen inválida:", image);
+      return null;
+    }
+
+    return (
+      <div
+        key={image.id || index}
+        className={styles.imageCard}
+        onClick={() => setSelectedImage(image)}
+      >
+        <div className={styles.imageContainer}>
+          <Image
+            src={image.url}
+            alt={image.title || `Imagen ${index + 1}`}
+            fill
+            style={{ objectFit: "cover" }}
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+          />
+        </div>
+        <h3 className={styles.imageTitle}>
+          {image.title || `Imagen ${index + 1}`}
+        </h3>
+      </div>
+    );
+  };
 
   return (
     <div className={styles.container}>
@@ -69,34 +118,17 @@ export default function Gallery() {
           </div>
         )}
 
-        {!isLoading && !error && media.images.length === 0 && (
-          <div className={styles.empty}>
-            <p>No hay imágenes disponibles</p>
-          </div>
-        )}
+        {!isLoading &&
+          !error &&
+          (!media.images || media.images.length === 0) && (
+            <div className={styles.empty}>
+              <p>No hay imágenes disponibles</p>
+            </div>
+          )}
 
-        {!isLoading && !error && media.images.length > 0 && (
+        {!isLoading && !error && media.images && media.images.length > 0 && (
           <div className={styles.grid}>
-            {media.images.map((image, index) => (
-              <div
-                key={image.id || index}
-                className={styles.imageCard}
-                onClick={() => setSelectedImage(image)}
-              >
-                <div className={styles.imageContainer}>
-                  <Image
-                    src={image.url}
-                    alt={image.title || `Imagen ${index + 1}`}
-                    fill
-                    style={{ objectFit: "cover" }}
-                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                  />
-                </div>
-                <h3 className={styles.imageTitle}>
-                  {image.title || `Imagen ${index + 1}`}
-                </h3>
-              </div>
-            ))}
+            {media.images.map((image, index) => renderImage(image, index))}
           </div>
         )}
 
