@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Head from "next/head";
 import styles from "../styles/Videos.module.css";
 
@@ -7,6 +7,7 @@ export default function Videos() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [selectedVideo, setSelectedVideo] = useState(null);
+  const videoRef = useRef(null);
 
   const loadVideos = async () => {
     try {
@@ -40,6 +41,10 @@ export default function Videos() {
   };
 
   const closeVideoModal = () => {
+    if (videoRef.current) {
+      videoRef.current.pause();
+      videoRef.current.currentTime = 0;
+    }
     setSelectedVideo(null);
     document.body.style.overflow = "unset";
   };
@@ -143,6 +148,7 @@ export default function Videos() {
                 ×
               </button>
               <video
+                ref={videoRef}
                 controls
                 autoPlay
                 className={styles.modalVideo}
