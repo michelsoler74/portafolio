@@ -1,4 +1,4 @@
-import { v2 as cloudinary } from "cloudinary";
+const cloudinary = require("cloudinary").v2;
 
 export default async function handler(req, res) {
   if (req.method !== "GET") {
@@ -6,19 +6,31 @@ export default async function handler(req, res) {
   }
 
   try {
-    // Configuración básica de Cloudinary
+    // Configuración directa de Cloudinary
     cloudinary.config({
-      cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+      cloud_name: "dezpemypy",
       api_key: process.env.CLOUDINARY_API_KEY,
       api_secret: process.env.CLOUDINARY_API_SECRET,
+      secure: true,
     });
 
-    // Obtener imágenes
-    const result = await cloudinary.api.resources({
-      type: "upload",
-      resource_type: "image",
-      max_results: 100,
-    });
+    // Obtener imágenes con manejo de errores más específico
+    let result;
+    try {
+      result = await cloudinary.api.resources({
+        type: "upload",
+        resource_type: "image",
+        max_results: 100,
+      });
+    } catch (cloudinaryError) {
+      console.error("Error específico de Cloudinary:", cloudinaryError);
+      throw new Error(`Error de Cloudinary: ${cloudinaryError.message}`);
+    }
+
+    // Verificar que tenemos recursos antes de procesarlos
+    if (!result || !result.resources || !Array.isArray(result.resources)) {
+      throw new Error("No se recibieron recursos válidos de Cloudinary");
+    }
 
     // Procesar y formatear las imágenes
     const images = result.resources.map((resource) => ({
@@ -31,7 +43,7 @@ export default async function handler(req, res) {
 
     return res.status(200).json(images);
   } catch (error) {
-    console.error("Error al obtener imágenes:", error);
+    console.error("Error completo:", error);
     return res.status(500).json({
       error: "Error al obtener imágenes de Cloudinary",
       details: error.message,
