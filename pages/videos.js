@@ -7,6 +7,7 @@ export default function Videos() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [selectedVideo, setSelectedVideo] = useState(null);
+  const [showModal, setShowModal] = useState(false);
   const videoRef = useRef(null);
 
   const loadVideos = async () => {
@@ -37,16 +38,29 @@ export default function Videos() {
 
   const openVideoModal = (video) => {
     setSelectedVideo(video);
+    setShowModal(true);
     document.body.style.overflow = "hidden";
   };
 
   const closeVideoModal = () => {
+    // Primero ocultamos el modal
+    setShowModal(false);
+
+    // Detenemos y limpiamos el video
     if (videoRef.current) {
       videoRef.current.pause();
       videoRef.current.currentTime = 0;
+      videoRef.current.src = ""; // Limpiamos la fuente del video
     }
-    setSelectedVideo(null);
+
+    // Restauramos el scroll y limpiamos el video seleccionado
     document.body.style.overflow = "unset";
+
+    // Esperamos un momento antes de limpiar el video seleccionado
+    // para evitar parpadeos durante la transición
+    setTimeout(() => {
+      setSelectedVideo(null);
+    }, 100);
   };
 
   // Manejar tecla Escape para cerrar el modal
@@ -57,14 +71,14 @@ export default function Videos() {
       }
     };
 
-    if (selectedVideo) {
+    if (showModal) {
       window.addEventListener("keydown", handleEscape);
     }
 
     return () => {
       window.removeEventListener("keydown", handleEscape);
     };
-  }, [selectedVideo]);
+  }, [showModal]);
 
   // Manejar el clic en el fondo del modal
   const handleModalClick = (e) => {
@@ -137,7 +151,7 @@ export default function Videos() {
           </div>
         )}
 
-        {selectedVideo && (
+        {selectedVideo && showModal && (
           <div className={styles.modal} onClick={handleModalClick}>
             <div className={styles.modalContent}>
               <button
