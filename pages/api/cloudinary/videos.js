@@ -33,16 +33,29 @@ export default async function handler(req, res) {
     }
 
     // Procesar y formatear los videos
-    const videos = result.resources.map((resource) => ({
-      id: resource.public_id,
-      title: resource.public_id.split("/").pop(),
-      url: resource.secure_url,
-      width: resource.width,
-      height: resource.height,
-      duration: resource.duration,
-      format: resource.format,
-      thumbnail: resource.secure_url.replace("/video/", "/video/thumbnail/"),
-    }));
+    const videos = result.resources.map((resource) => {
+      // Generar URL de miniatura optimizada
+      const thumbnailUrl = cloudinary.url(resource.public_id, {
+        resource_type: "video",
+        transformation: [
+          { width: 640, crop: "scale" }, // Escalar a un ancho razonable
+          { fetch_format: "auto" }, // Formato automático óptimo
+          { quality: "auto" }, // Calidad automática óptima
+          { start_offset: "0" }, // Tomar el primer frame
+        ],
+      });
+
+      return {
+        id: resource.public_id,
+        title: resource.public_id.split("/").pop(),
+        url: resource.secure_url,
+        width: resource.width,
+        height: resource.height,
+        duration: resource.duration,
+        format: resource.format,
+        thumbnail: thumbnailUrl,
+      };
+    });
 
     return res.status(200).json(videos);
   } catch (error) {
@@ -50,7 +63,7 @@ export default async function handler(req, res) {
     return res.status(500).json({
       error: "Error al obtener videos de Cloudinary",
       details: error.message,
-      config: cloudinary.config(), // Incluir la configuración actual en el error
+      config: cloudinary.config(),
     });
   }
 }
