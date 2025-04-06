@@ -6,50 +6,49 @@ export default async function handler(req, res) {
   }
 
   try {
-    // Verificar todas las variables de entorno necesarias
-    console.log("Verificando configuración de Cloudinary...");
-    if (!process.env.CLOUDINARY_CLOUD_NAME) {
-      throw new Error("CLOUDINARY_CLOUD_NAME no está configurado");
-    }
-    if (!process.env.CLOUDINARY_API_KEY) {
-      throw new Error("CLOUDINARY_API_KEY no está configurado");
-    }
-    if (!process.env.CLOUDINARY_API_SECRET) {
-      throw new Error("CLOUDINARY_API_SECRET no está configurado");
-    }
-
-    console.log("Configuración actual:", {
+    // Forzar la configuración de Cloudinary aquí también
+    cloudinary.config({
       cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
-      api_key: process.env.CLOUDINARY_API_KEY?.slice(0, 5) + "...", // Solo mostramos los primeros 5 caracteres por seguridad
+      api_key: process.env.CLOUDINARY_API_KEY,
+      api_secret: process.env.CLOUDINARY_API_SECRET,
     });
 
-    // Verificar la configuración de Cloudinary
+    // Verificar la configuración actual
     const config = cloudinary.config();
-    console.log("Configuración de Cloudinary:", {
+    console.log("Configuración actual de Cloudinary:", {
       cloud_name: config.cloud_name,
       api_key: config.api_key?.slice(0, 5) + "...",
+      api_secret: "***",
     });
 
     // Intentar hacer un ping a Cloudinary primero
     console.log("Verificando conexión con Cloudinary...");
-    await cloudinary.api.ping();
-    console.log("Conexión con Cloudinary establecida correctamente");
+    try {
+      await cloudinary.api.ping();
+      console.log("Conexión con Cloudinary establecida correctamente");
+    } catch (pingError) {
+      console.error("Error al hacer ping a Cloudinary:", pingError);
+      throw new Error(`Error de conexión con Cloudinary: ${pingError.message}`);
+    }
 
-    // Obtener imágenes de la carpeta Inicio
-    console.log("Buscando imágenes...");
+    // Obtener imágenes
+    console.log("Buscando imágenes en Cloudinary...");
     const result = await cloudinary.api.resources({
       type: "upload",
       resource_type: "image",
       max_results: 100,
+      prefix: "", // Buscar en la raíz
     });
 
-    console.log("Resultado de la búsqueda:", {
-      total: result.resources?.length || 0,
-      muestra: result.resources?.[0]?.public_id || "No hay imágenes",
-    });
+    if (!result || !result.resources) {
+      console.error("No se recibieron recursos de Cloudinary:", result);
+      throw new Error("Respuesta inválida de Cloudinary");
+    }
+
+    console.log(`Encontradas ${result.resources.length} imágenes`);
 
     // Procesar y formatear las imágenes
-    const images = (result.resources || []).map((resource) => ({
+    const images = result.resources.map((resource) => ({
       id: resource.public_id,
       title: resource.public_id.split("/").pop(),
       url: resource.secure_url,
@@ -57,7 +56,6 @@ export default async function handler(req, res) {
       height: resource.height,
     }));
 
-    console.log(`Imágenes encontradas: ${images.length}`);
     return res.status(200).json(images);
   } catch (error) {
     console.error("Error detallado:", {
@@ -66,7 +64,6 @@ export default async function handler(req, res) {
       stack: error.stack,
     });
 
-    // Devolver un mensaje de error más detallado
     return res.status(500).json({
       error: "Error al obtener imágenes de Cloudinary",
       details: error.message,
