@@ -5,22 +5,59 @@ import styles from "../styles/Videos.module.css";
 export default function Videos() {
   const [videos, setVideos] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  async function loadVideos() {
+    try {
+      setIsLoading(true);
+      console.log("Cargando videos...");
+      const response = await fetch("/api/cloudinary/videos");
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || "Error al cargar los videos");
+      }
+
+      const data = await response.json();
+
+      if (!Array.isArray(data)) {
+        throw new Error("Formato de respuesta inválido");
+      }
+
+      console.log(`${data.length} videos cargados`);
+      setVideos(data);
+      setError(null);
+    } catch (err) {
+      console.error("Error:", err);
+      setError(err.message);
+    } finally {
+      setIsLoading(false);
+    }
+  }
 
   useEffect(() => {
-    async function loadVideos() {
-      try {
-        const response = await fetch("/api/cloudinary/media");
-        const data = await response.json();
-        setVideos(data.videos);
-      } catch (error) {
-        console.error("Error cargando videos:", error);
-      } finally {
-        setIsLoading(false);
-      }
-    }
-
     loadVideos();
   }, []);
+
+  const renderVideo = (video, index) => {
+    if (!video?.url) return null;
+
+    return (
+      <div key={video.id || index} className={styles.videoCard}>
+        <div className={styles.videoContainer}>
+          <video
+            src={video.url}
+            controls
+            className={styles.video}
+            poster={video.thumbnail}
+          />
+        </div>
+        <h3 className={styles.videoTitle}>
+          {video.title || `Video ${index + 1}`}
+        </h3>
+      </div>
+    );
+  };
 
   return (
     <div className={styles.container}>
@@ -28,31 +65,45 @@ export default function Videos() {
         <title>Videos | Michel Soler</title>
         <meta
           name="description"
-          content="Videos sobre construcción, IA y tecnología"
+          content="Videos de Michel Soler - Construcción, IA y Tecnología"
         />
       </Head>
 
       <main className={styles.main}>
         <h1 className={styles.title}>Videos</h1>
 
-        {isLoading ? (
-          <div className={styles.loading}>Cargando videos...</div>
-        ) : (
+        {isLoading && (
+          <div className={styles.loading}>
+            <div className={styles.loadingSpinner}></div>
+            <p>Cargando videos...</p>
+          </div>
+        )}
+
+        {error && (
+          <div className={styles.error}>
+            <p>Error: {error}</p>
+            <button
+              onClick={() => {
+                setIsLoading(true);
+                setError(null);
+                loadVideos();
+              }}
+              className={styles.retryButton}
+            >
+              Intentar de nuevo
+            </button>
+          </div>
+        )}
+
+        {!isLoading && !error && videos.length === 0 && (
+          <div className={styles.empty}>
+            <p>No hay videos disponibles</p>
+          </div>
+        )}
+
+        {!isLoading && !error && videos.length > 0 && (
           <div className={styles.grid}>
-            {videos.map((video) => (
-              <div key={video.id} className={styles.videoCard}>
-                <video
-                  src={video.url}
-                  controls
-                  className={styles.videoFrame}
-                  poster={video.thumbnail}
-                >
-                  <source src={video.url} type={`video/${video.format}`} />
-                  Tu navegador no soporta el elemento de video.
-                </video>
-                <h3 className={styles.videoTitle}>{video.title}</h3>
-              </div>
-            ))}
+            {videos.map((video, index) => renderVideo(video, index))}
           </div>
         )}
       </main>

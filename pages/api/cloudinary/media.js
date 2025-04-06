@@ -1,11 +1,4 @@
-import { v2 as cloudinary } from "cloudinary";
-
-// Configuración de Cloudinary usando variables de entorno
-cloudinary.config({
-  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
-  api_key: process.env.CLOUDINARY_API_KEY,
-  api_secret: process.env.CLOUDINARY_API_SECRET,
-});
+import cloudinary from "../../../lib/cloudinary";
 
 export default async function handler(req, res) {
   if (req.method !== "GET") {
@@ -13,77 +6,38 @@ export default async function handler(req, res) {
   }
 
   try {
-    console.log("Iniciando búsqueda de recursos en Cloudinary");
+    // Verificar que tenemos las variables de entorno necesarias
+    if (!process.env.CLOUDINARY_CLOUD_NAME) {
+      throw new Error("Falta la configuración de Cloudinary");
+    }
+
+    console.log("Iniciando búsqueda de imágenes en Cloudinary");
     console.log("Usando cloud_name:", process.env.CLOUDINARY_CLOUD_NAME);
 
-    // Verificar la conexión
-    await cloudinary.api.ping();
-    console.log("Conexión con Cloudinary establecida");
-
     // Obtener imágenes de la carpeta Inicio
-    console.log("Buscando imágenes en la carpeta Inicio...");
-    const imagesResult = await cloudinary.api.resources({
+    const result = await cloudinary.api.resources({
       type: "upload",
       prefix: "Inicio",
       resource_type: "image",
       max_results: 100,
     });
-    console.log(`Imágenes encontradas: ${imagesResult.resources?.length || 0}`);
 
-    // Obtener videos de la carpeta Inicio
-    console.log("Buscando videos en la carpeta Inicio...");
-    const videosResult = await cloudinary.api.resources({
-      type: "upload",
-      prefix: "Inicio",
-      resource_type: "video",
-      max_results: 100,
-    });
-    console.log(`Videos encontrados: ${videosResult.resources?.length || 0}`);
+    // Procesar y formatear las imágenes
+    const images = (result.resources || []).map((resource) => ({
+      id: resource.public_id,
+      title: resource.public_id.split("/").pop(),
+      url: resource.secure_url,
+      width: resource.width,
+      height: resource.height,
+    }));
 
-    // Procesar imágenes
-    const images = (imagesResult.resources || []).map((resource) => {
-      console.log("Procesando imagen:", resource.public_id);
-      return {
-        id: resource.public_id,
-        title: resource.public_id.split("/").pop(),
-        url: resource.secure_url,
-        width: resource.width,
-        height: resource.height,
-      };
-    });
-
-    // Procesar videos
-    const videos = (videosResult.resources || []).map((resource) => {
-      console.log("Procesando video:", resource.public_id);
-      return {
-        id: resource.public_id,
-        title: resource.public_id.split("/").pop(),
-        url: resource.secure_url,
-        width: resource.width,
-        height: resource.height,
-        format: resource.format,
-        duration: resource.duration,
-      };
-    });
-
-    const response = { images, videos };
-    console.log("Respuesta preparada:", {
-      totalImages: images.length,
-      totalVideos: videos.length,
-    });
-
-    return res.status(200).json(response);
+    console.log(`Imágenes encontradas: ${images.length}`);
+    return res.status(200).json(images);
   } catch (error) {
-    console.error("Error detallado en Cloudinary:", {
-      message: error.message,
-      stack: error.stack,
-      name: error.name,
-    });
-
+    console.error("Error al obtener imágenes:", error);
     return res.status(500).json({
-      error: "Error al obtener recursos de Cloudinary",
+      error: "Error al obtener imágenes de Cloudinary",
       details: error.message,
-      name: error.name,
     });
   }
 }
