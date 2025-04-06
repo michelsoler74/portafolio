@@ -13,13 +13,42 @@ export default async function handler(req, res) {
   }
 
   try {
-    const images = await getResources("", "image");
-    const videos = await getResources("", "video");
-
-    return res.status(200).json({
-      images,
-      videos,
+    // Obtener imágenes
+    const imagesResult = await cloudinary.api.resources({
+      type: "upload",
+      prefix: "",
+      resource_type: "image",
+      max_results: 100,
     });
+
+    // Obtener videos
+    const videosResult = await cloudinary.api.resources({
+      type: "upload",
+      prefix: "",
+      resource_type: "video",
+      max_results: 100,
+    });
+
+    const response = {
+      images: imagesResult.resources.map((resource) => ({
+        id: resource.public_id,
+        title: resource.public_id.split("/").pop(),
+        url: resource.secure_url,
+        width: resource.width,
+        height: resource.height,
+      })),
+      videos: videosResult.resources.map((resource) => ({
+        id: resource.public_id,
+        title: resource.public_id.split("/").pop(),
+        url: resource.secure_url,
+        width: resource.width,
+        height: resource.height,
+        format: resource.format,
+        duration: resource.duration,
+      })),
+    };
+
+    return res.status(200).json(response);
   } catch (error) {
     console.error("Error en Cloudinary:", error);
     return res.status(500).json({

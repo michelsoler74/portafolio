@@ -41,8 +41,7 @@
 .imageContainer {
   position: relative;
   width: 100%;
-  height: 300px;
-  overflow: hidden;
+  padding-bottom: 75%; /* Aspecto 4:3 */
 }
 
 .image {
@@ -125,13 +124,5 @@
   .grid {
     grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
     gap: 1rem;
-  }
-
-  .imageContainer {
-    height: 250px;
-  }
-
-  .title {
-    font-size: 2rem;
   }
 }

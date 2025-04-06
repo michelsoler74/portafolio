@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Head from "next/head";
-import CloudinaryImage from "../components/CloudinaryImage";
+import Image from "next/image";
 import styles from "../styles/Gallery.module.css";
 import Lightbox from "../components/Lightbox";
 
@@ -84,12 +84,12 @@ export default function Gallery() {
                 onClick={() => setSelectedImage(image)}
               >
                 <div className={styles.imageContainer}>
-                  <CloudinaryImage
-                    src={image.id}
+                  <Image
+                    src={image.url}
                     alt={image.title || `Imagen ${index + 1}`}
-                    width={400}
-                    height={300}
-                    className={styles.image}
+                    fill
+                    style={{ objectFit: "cover" }}
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                   />
                 </div>
                 <h3 className={styles.imageTitle}>
