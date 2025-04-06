@@ -11,47 +11,49 @@ export default function Gallery() {
   const [selectedImage, setSelectedImage] = useState(null);
   const [activeTab, setActiveTab] = useState("images"); // "images" o "videos"
 
-  useEffect(() => {
-    async function loadMedia() {
-      try {
-        console.log("Iniciando carga de medios...");
-        const response = await fetch("/api/cloudinary/media");
-        const data = await response.json();
+  // Extraer la función loadMedia fuera del useEffect
+  async function loadMedia() {
+    try {
+      setIsLoading(true);
+      console.log("Iniciando carga de medios...");
+      const response = await fetch("/api/cloudinary/media");
+      const data = await response.json();
 
-        if (!response.ok) {
-          console.error("Error en la respuesta:", data);
-          throw new Error(
-            data.error || data.details || "Error al cargar los medios"
-          );
-        }
-
-        // Validar la estructura de los datos
-        if (!data || typeof data !== "object") {
-          throw new Error("Formato de respuesta inválido");
-        }
-
-        const images = Array.isArray(data.images) ? data.images : [];
-        const videos = Array.isArray(data.videos) ? data.videos : [];
-
-        console.log("Medios cargados:", {
-          totalImages: images.length,
-          totalVideos: videos.length,
-        });
-
-        setMedia({ images, videos });
-        setError(null);
-      } catch (err) {
-        console.error("Error detallado:", {
-          message: err.message,
-          stack: err.stack,
-          name: err.name,
-        });
-        setError(err.message);
-      } finally {
-        setIsLoading(false);
+      if (!response.ok) {
+        console.error("Error en la respuesta:", data);
+        throw new Error(
+          data.error || data.details || "Error al cargar los medios"
+        );
       }
-    }
 
+      // Validar la estructura de los datos
+      if (!data || typeof data !== "object") {
+        throw new Error("Formato de respuesta inválido");
+      }
+
+      const images = Array.isArray(data.images) ? data.images : [];
+      const videos = Array.isArray(data.videos) ? data.videos : [];
+
+      console.log("Medios cargados:", {
+        totalImages: images.length,
+        totalVideos: videos.length,
+      });
+
+      setMedia({ images, videos });
+      setError(null);
+    } catch (err) {
+      console.error("Error detallado:", {
+        message: err.message,
+        stack: err.stack,
+        name: err.name,
+      });
+      setError(err.message);
+    } finally {
+      setIsLoading(false);
+    }
+  }
+
+  useEffect(() => {
     loadMedia();
   }, []);
 

@@ -8,30 +8,32 @@ export default function Workflows() {
   const [error, setError] = useState(null);
   const [selectedWorkflow, setSelectedWorkflow] = useState(null);
 
-  useEffect(() => {
-    async function loadWorkflows() {
-      try {
-        console.log("Cargando workflows...");
-        const response = await fetch("/api/cloudinary/workflows");
-        const data = await response.json();
+  // Extraer la función loadWorkflows fuera del useEffect
+  async function loadWorkflows() {
+    try {
+      setIsLoading(true);
+      console.log("Cargando workflows...");
+      const response = await fetch("/api/cloudinary/workflows");
+      const data = await response.json();
 
-        if (!response.ok) {
-          throw new Error(
-            data.error || data.details || "Error al cargar los workflows"
-          );
-        }
-
-        console.log("Workflows cargados:", data.length);
-        setWorkflows(data);
-        setError(null);
-      } catch (err) {
-        console.error("Error cargando workflows:", err);
-        setError(err.message);
-      } finally {
-        setIsLoading(false);
+      if (!response.ok) {
+        throw new Error(
+          data.error || data.details || "Error al cargar los workflows"
+        );
       }
-    }
 
+      console.log("Workflows cargados:", data.length);
+      setWorkflows(data);
+      setError(null);
+    } catch (err) {
+      console.error("Error cargando workflows:", err);
+      setError(err.message);
+    } finally {
+      setIsLoading(false);
+    }
+  }
+
+  useEffect(() => {
     loadWorkflows();
   }, []);
 
