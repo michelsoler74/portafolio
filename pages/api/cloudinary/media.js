@@ -20,19 +20,21 @@ export default async function handler(req, res) {
     await cloudinary.api.ping();
     console.log("Conexión con Cloudinary establecida");
 
-    // Obtener imágenes
-    console.log("Buscando imágenes...");
+    // Obtener imágenes de la carpeta Inicio
+    console.log("Buscando imágenes en la carpeta Inicio...");
     const imagesResult = await cloudinary.api.resources({
       type: "upload",
+      prefix: "Inicio",
       resource_type: "image",
       max_results: 100,
     });
     console.log(`Imágenes encontradas: ${imagesResult.resources?.length || 0}`);
 
-    // Obtener videos
-    console.log("Buscando videos...");
+    // Obtener videos de la carpeta Inicio
+    console.log("Buscando videos en la carpeta Inicio...");
     const videosResult = await cloudinary.api.resources({
       type: "upload",
+      prefix: "Inicio",
       resource_type: "video",
       max_results: 100,
     });

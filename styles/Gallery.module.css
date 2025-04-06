@@ -18,6 +18,33 @@
   color: #ffffff;
 }
 
+.tabs {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.tabButton {
+  padding: 0.75rem 2rem;
+  font-size: 1.1rem;
+  background: rgba(255, 255, 255, 0.1);
+  border: 2px solid transparent;
+  border-radius: 8px;
+  color: white;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.tabButton:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.tabButton.active {
+  background: rgba(102, 217, 232, 0.2);
+  border-color: #66d9e8;
+}
+
 .grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
@@ -25,7 +52,8 @@
   padding: 1rem 0;
 }
 
-.imageCard {
+.imageCard,
+.videoCard {
   position: relative;
   border-radius: 10px;
   overflow: hidden;
@@ -34,7 +62,8 @@
   cursor: pointer;
 }
 
-.imageCard:hover {
+.imageCard:hover,
+.videoCard:hover {
   transform: translateY(-5px);
 }
 
@@ -44,18 +73,24 @@
   padding-bottom: 75%; /* Aspecto 4:3 */
 }
 
-.image {
+.videoContainer {
+  position: relative;
+  width: 100%;
+  padding-bottom: 56.25%; /* Aspecto 16:9 */
+  background: #000;
+}
+
+.video {
+  position: absolute;
+  top: 0;
+  left: 0;
   width: 100%;
   height: 100%;
-  object-fit: cover;
-  transition: transform 0.3s ease;
+  object-fit: contain;
 }
 
-.imageCard:hover .image {
-  transform: scale(1.05);
-}
-
-.imageTitle {
+.imageTitle,
+.videoTitle {
   padding: 1rem;
   margin: 0;
   font-size: 1.1rem;
@@ -124,5 +159,15 @@
   .grid {
     grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
     gap: 1rem;
+  }
+
+  .tabs {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .tabButton {
+    width: 100%;
+    max-width: 300px;
   }
 }
