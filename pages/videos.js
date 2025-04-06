@@ -8,25 +8,25 @@ export default function Videos() {
   const [error, setError] = useState(null);
   const [selectedVideo, setSelectedVideo] = useState(null);
 
-  useEffect(() => {
-    const loadVideos = async () => {
-      try {
-        setLoading(true);
-        setError(null);
-        const response = await fetch("/api/cloudinary/videos");
-        if (!response.ok) {
-          throw new Error("Error al cargar los videos");
-        }
-        const data = await response.json();
-        setVideos(data);
-      } catch (error) {
-        console.error("Error:", error);
-        setError(error.message);
-      } finally {
-        setLoading(false);
+  const loadVideos = async () => {
+    try {
+      setLoading(true);
+      setError(null);
+      const response = await fetch("/api/cloudinary/videos");
+      if (!response.ok) {
+        throw new Error("Error al cargar los videos");
       }
-    };
+      const data = await response.json();
+      setVideos(data);
+    } catch (error) {
+      console.error("Error:", error);
+      setError(error.message);
+    } finally {
+      setLoading(false);
+    }
+  };
 
+  useEffect(() => {
     loadVideos();
   }, []);
 
@@ -36,13 +36,11 @@ export default function Videos() {
 
   const openVideoModal = (video) => {
     setSelectedVideo(video);
-    // Añadir clase al body para prevenir scroll
     document.body.style.overflow = "hidden";
   };
 
   const closeVideoModal = () => {
     setSelectedVideo(null);
-    // Restaurar scroll
     document.body.style.overflow = "unset";
   };
 
@@ -62,6 +60,19 @@ export default function Videos() {
       window.removeEventListener("keydown", handleEscape);
     };
   }, [selectedVideo]);
+
+  // Manejar el clic en el fondo del modal
+  const handleModalClick = (e) => {
+    if (e.target.className === styles.modal) {
+      closeVideoModal();
+    }
+  };
+
+  // Manejar el clic en el botón de cerrar
+  const handleCloseClick = (e) => {
+    e.stopPropagation(); // Prevenir que el clic se propague
+    closeVideoModal();
+  };
 
   return (
     <div className={styles.container}>
@@ -122,15 +133,21 @@ export default function Videos() {
         )}
 
         {selectedVideo && (
-          <div className={styles.modal} onClick={closeVideoModal}>
-            <div
-              className={styles.modalContent}
-              onClick={(e) => e.stopPropagation()}
-            >
-              <button className={styles.closeButton} onClick={closeVideoModal}>
+          <div className={styles.modal} onClick={handleModalClick}>
+            <div className={styles.modalContent}>
+              <button
+                className={styles.closeButton}
+                onClick={handleCloseClick}
+                aria-label="Cerrar video"
+              >
                 ×
               </button>
-              <video controls autoPlay className={styles.modalVideo}>
+              <video
+                controls
+                autoPlay
+                className={styles.modalVideo}
+                onClick={(e) => e.stopPropagation()}
+              >
                 <source
                   src={selectedVideo.url}
                   type={`video/${selectedVideo.format}`}

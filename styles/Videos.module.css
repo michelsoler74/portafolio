@@ -117,24 +117,32 @@
 
 .closeButton {
   position: absolute;
-  top: 10px;
-  right: 10px;
+  top: 15px;
+  right: 15px;
   width: 40px;
   height: 40px;
-  border: none;
-  background: rgba(0, 0, 0, 0.7);
+  border: 2px solid white;
+  background: rgba(0, 0, 0, 0.8);
   color: white;
-  font-size: 24px;
+  font-size: 28px;
   border-radius: 50%;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: background-color 0.3s ease;
+  transition: all 0.3s ease;
+  z-index: 1100;
+  padding: 0;
+  line-height: 1;
 }
 
 .closeButton:hover {
   background: rgba(255, 255, 255, 0.2);
+  transform: scale(1.1);
+}
+
+.closeButton:active {
+  transform: scale(0.95);
 }
 
 .modalTitle {
