@@ -40,6 +40,10 @@ export default function Home() {
               <h3>Videos</h3>
               <p>Mira mis videos sobre construcción y tecnología</p>
             </Link>
+            <Link href="/songs" className={styles.featureCard}>
+              <h3>Música</h3>
+              <p>Escucha mis composiciones originales</p>
+            </Link>
             <Link href="/about" className={styles.featureCard}>
               <h3>Sobre Mí</h3>
               <p>Conoce más sobre mi experiencia y trayectoria</p>

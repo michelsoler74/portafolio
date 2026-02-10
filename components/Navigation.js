@@ -20,6 +20,9 @@ export default function Navigation() {
         <Link href="/videos" className={styles.link}>
           Videos
         </Link>
+        <Link href="/songs" className={styles.link}>
+          Música
+        </Link>
         <Link href="/about" className={styles.link}>
           Sobre mí
         </Link>
